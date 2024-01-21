@@ -2782,7 +2782,7 @@
     </pb_type>
     <!-- bram -->
   </complexblocklist>
-  <layout tileable="true" through_channel="true">
+  <layout tileable="true" through_channel="true" concat_wire="false" concat_pass_wire="true">
     <fixed_layout name="castor10x8_heterogeneous" width="12" height="10">
       <fill type="clb" priority="10"/>
       <region type="dsp" startx="4" endx="4" starty="2" endy="H-3" priority="30"/>
