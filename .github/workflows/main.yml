@@ -970,7 +970,6 @@ jobs:
            echo "RUN_URL=$url" >> $GITHUB_ENV
     
     - name: Create PR if test pass
-      if: "${{ matrix.mode == 'solver' && github.event_name == 'repository_dispatch' }}" 
       run: |
             gh pr create -B main \
             -H pub_raptor_changes_${{ github.event.client_payload.commitSHA }}   \
