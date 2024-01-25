@@ -24,8 +24,8 @@ concurrency:
 
 jobs:
   linux-gcc:
+    if: ${{ github.event_name != 'repository_dispatch' }}
     name: ubuntu-${{ matrix.mode }}
-
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -211,6 +211,7 @@ jobs:
 
 # Reference: https://github.com/OPM/ResInsight/blob/dev/.github/workflows/centos7.yml
   centos7-gcc:
+    if: ${{ github.event_name != 'repository_dispatch' }}
     name:  centos7-${{ matrix.mode }}
     runs-on: ubuntu-latest
     defaults:
@@ -934,6 +935,9 @@ jobs:
   BringIn_OSFPGA_Raptor:
     if: ${{ github.event_name == 'repository_dispatch' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
     - name: ssh-agent
       uses: webfactory/ssh-agent@v0.7.0
@@ -968,6 +972,9 @@ jobs:
            sleep 10 
            url=`gh run list --branch pub_raptor_changes_${{ github.event.client_payload.commitSHA }} --json workflowName,url |  jq -r '.[] | select(.workflowName == "main") | .url'`
            echo "RUN_URL=$url" >> $GITHUB_ENV
+
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     
     - name: Create PR if test pass
       run: |
