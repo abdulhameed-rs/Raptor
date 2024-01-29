@@ -125,13 +125,13 @@ get_filename_component(VERIFY_SYNTH_PORTS_SRC_DIR "Raptor_Tools/gatelevel_reader
 REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE)
 add_subdirectory(${VERIFY_SYNTH_PORTS_SRC_DIR})
 
-
-get_filename_component(VERI_PRUNE_SRC_DIR "Raptor_Tools/gatelevel_readers/veri_prune"
-REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE)
-add_subdirectory(${VERI_PRUNE_SRC_DIR})
-get_filename_component(READ_VERILOG_SRC_DIR "Raptor_Tools/gatelevel_readers/read_verilog"
-REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE)
-add_subdirectory(${READ_VERILOG_SRC_DIR})
+#TODO enable them 
+#get_filename_component(VERI_PRUNE_SRC_DIR "Raptor_Tools/gatelevel_readers/veri_prune"
+#REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE)
+#add_subdirectory(${VERI_PRUNE_SRC_DIR})
+#get_filename_component(READ_VERILOG_SRC_DIR "Raptor_Tools/gatelevel_readers/read_verilog"
+#REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE)
+#add_subdirectory(${READ_VERILOG_SRC_DIR})
 
 
 get_filename_component(READ_EDIF_SRC_DIR "Raptor_Tools/gatelevel_readers/read_edif"
@@ -158,6 +158,10 @@ endif()
 if (NOT APPLE)
     # Disable yosys_verific_rs till EDA-799 is resolved.
     add_subdirectory(yosys_verific_rs)
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/de/CMakeLists.txt)
+    	add_subdirectory(src/de) 
+    	add_dependencies(de_actual de)
+    endif()
 endif()
 
 add_subdirectory("Raptor_Tools/parser_plugins")
@@ -180,7 +184,7 @@ add_subdirectory(IP_Catalog)
 # Raptor version
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 9)
-set(VERSION_PATCH 27)
+set(VERSION_PATCH 28)
 
 execute_process(COMMAND git config --global --add safe.directory ${CMAKE_CURRENT_SOURCE_DIR}
   COMMAND git rev-parse --short HEAD
@@ -676,21 +680,7 @@ if (NOT PRODUCTION_BUILD)
       DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis/)
   install(
       FILES ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis/cell_sim_blackbox.v
-      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis/)
-      
-  # Genesis2 Simulation models
-  install(
-      DIRECTORY ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis2/
-      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis2/)
-  install(
-      FILES ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys/share/simlib.v
-      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis2/)
-  install(
-      FILES ${PROJECT_SOURCE_DIR}/lib/pnr/primitives.v
-      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis2/)
-  install(
-      FILES ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis2/cell_sim_blackbox.v
-      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis2/)
+      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/raptor/sim_models/rapidsilicon/genesis/)    
 endif()
 
 
@@ -829,19 +819,6 @@ add_custom_command(TARGET raptor-bin POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
           ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis/cell_sim_blackbox.v
           ${CMAKE_CURRENT_BINARY_DIR}/share/raptor/sim_models/rapidsilicon/genesis    
-   #Genesis2 Sim Model
-      COMMAND ${CMAKE_COMMAND} -E copy_directory
-          ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis2/
-          ${CMAKE_CURRENT_BINARY_DIR}/share/raptor/sim_models/rapidsilicon/genesis2/
-      COMMAND ${CMAKE_COMMAND} -E copy
-          ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys/share/simlib.v
-          ${CMAKE_CURRENT_BINARY_DIR}/share/raptor/sim_models/rapidsilicon/genesis2/
-      COMMAND ${CMAKE_COMMAND} -E copy
-          ${PROJECT_SOURCE_DIR}/lib/pnr/primitives.v
-          ${CMAKE_CURRENT_BINARY_DIR}/share/raptor/sim_models/rapidsilicon/genesis2/
-      COMMAND ${CMAKE_COMMAND} -E copy
-          ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis2/cell_sim_blackbox.v
-          ${CMAKE_CURRENT_BINARY_DIR}/share/raptor/sim_models/rapidsilicon/genesis2/
    #Genesis3 Sim Model
       COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys-rs-plugin/genesis3/
@@ -865,9 +842,6 @@ else ()
           ${CMAKE_CURRENT_BINARY_DIR}/bin/
       COMMAND ${CMAKE_COMMAND} -E copy
           ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys/${YOSYS_BUILD_PATH}/bin/abc
-          ${CMAKE_CURRENT_BINARY_DIR}/bin/
-      COMMAND ${CMAKE_COMMAND} -E copy
-          ${PROJECT_SOURCE_DIR}/yosys_verific_rs/yosys/${YOSYS_BUILD_PATH}/bin/de
           ${CMAKE_CURRENT_BINARY_DIR}/bin/
       COMMAND ${CMAKE_COMMAND} -E copy
           ${CMAKE_CURRENT_BINARY_DIR}/Raptor_Tools/gatelevel_readers/verify_synth_ports/verify_synth_ports
