@@ -118,16 +118,18 @@ jobs:
         case "${{ matrix.updates }}" in
             "ric")
                 echo "updates are from ${{ matrix.updates }}"
-                extension=tcl
-                echo "EXTENSION=$extension" >> $GITHUB_ENV
                 echo "path_to_commit=etc/**/**/*.tcl etc/**/**/*/*.tcl etc/**/**/*/*.json" >> $GITHUB_ENV
+                any_diff=`git status --porcelain 'etc/*.json' 'etc/*.tcl'`
+                echo $any_diff
+                echo "AND_DIFF='$any_diff'" >> $GITHUB_ENV
                 ;;
             "xml")
                 echo "updates are from ${{ matrix.updates }}"
                 echo "b_name=${{ matrix.updates }}_${{ env.release_no }}" >> "$GITHUB_OUTPUT"
-                extension=xml
-                echo "EXTENSION=$extension" >> $GITHUB_ENV
                 echo "path_to_commit=etc/devices/**/*.xml etc/device.xml etc/devices/**/*.csv" >> $GITHUB_ENV
+                any_diff=`git status --porcelain 'etc/*.csv' 'etc/*.xml'`
+                echo $any_diff
+                echo "AND_DIFF='$any_diff'" >> $GITHUB_ENV
                 ;;
             *)
                 echo "Invalid value: ${{ matrix.updates }}"
@@ -137,9 +139,8 @@ jobs:
     - name: Check changes are related
       id: is_change
       run: |
-        any_diff=`git status --porcelain 'etc/*.${{ env.EXTENSION }}'`
-        echo $any_diff
-        if [ ! -z "$any_diff" ]
+        echo ${{ env.AND_DIFF }}
+        if [ ! -z "${{ env.AND_DIFF }}" ]
         then
            echo "has_changed=true" >> $GITHUB_OUTPUT
         else
