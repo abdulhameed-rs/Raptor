@@ -56,7 +56,7 @@ jobs:
                 echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             fi
             git branch -a 
-            BRANCH='${{ matrix.updates }}_$branch_postfix'
+            BRANCH="${{ matrix.updates }}_$branch_postfix"
             set +e
             git ls-remote --exit-code --heads origin $BRANCH >/dev/null 2>&1
             EXIT_CODE=$?
@@ -70,6 +70,7 @@ jobs:
                 echo "Git branch '$BRANCH' does not exist in the remote repository"
             fi
             mv .gitignore gitignore_backup
+            git branch
 
     - name: Download Latest Release
       if: ${{ github.event_name == 'repository_dispatch' }}
