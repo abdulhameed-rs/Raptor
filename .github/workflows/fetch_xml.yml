@@ -67,6 +67,7 @@ jobs:
             elif [[ $EXIT_CODE == '2' ]]; then
                 echo "Git branch '$BRANCH' does not exist in the remote repository"
             fi
+            mv .gitignore gitignore_backup
 
     - name: Download Latest Release
       if: ${{ github.event_name == 'repository_dispatch' }}
@@ -136,7 +137,7 @@ jobs:
     - name: Check changes are related
       id: is_change
       run: |
-        any_diff=`git status --porcelain '*.${{ env.EXTENSION }}'`
+        any_diff=`git status --porcelain 'etc'`
         echo $any_diff
         if [ ! -z "$any_diff" ]
         then
