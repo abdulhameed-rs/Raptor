@@ -121,6 +121,7 @@ jobs:
                 echo "path_to_commit=etc/**/**/*.tcl etc/**/**/*/*.tcl etc/**/**/*/*.json" >> $GITHUB_ENV
                 any_diff=`git status --porcelain 'etc/*.json' 'etc/*.tcl'`
                 echo $any_diff
+                any_diff=`echo $any_diff | awk '{print $2}'`
                 echo "AND_DIFF='$any_diff'" >> $GITHUB_ENV
                 ;;
             "xml")
@@ -129,6 +130,7 @@ jobs:
                 echo "path_to_commit=etc/devices/**/*.xml etc/device.xml etc/devices/**/*.csv" >> $GITHUB_ENV
                 any_diff=`git status --porcelain 'etc/*.csv' 'etc/*.xml'`
                 echo $any_diff
+                any_diff=`echo $any_diff | awk '{print $2}'`
                 echo "AND_DIFF='$any_diff'" >> $GITHUB_ENV
                 ;;
             *)
