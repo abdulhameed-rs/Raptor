@@ -263,9 +263,9 @@ jobs:
             gh pr create -B main \
             -H ${{ matrix.updates }}_${{ env.release_no }}  \
             -l "openfpga_castor_pd_XMLs"  \
-            --title 'Pulling release ${{ env.alaindargelas }} into main.' \
+            --title 'Pulling release ${{ env.release_no }} into main.' \
             --body 'An automated PR to check in New RIC TCL files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
-            -a NadeemYaseen #-r alaindargelas  
+            -a NadeemYaseen -r alaindargelas  
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
@@ -289,6 +289,9 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Self-Hosted Runner Post Job Cleanup
+      uses: TooMuch4U/actions-clean@v2.1
+            
     - name: switch to branch
       run: |
             git config --global --add safe.directory /__w/Raptor/Raptor
@@ -441,7 +444,7 @@ jobs:
             -l "openfpga_castor_pd_XMLs"  \
             --title 'Pulling release ${{ needs.XML_Digest_and_raptor_build.outputs.releaseNO }} into main.' \
             --body 'An automated PR to check in New XML files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
-            -a NadeemYaseen #-r alaindargelas  
+            -a NadeemYaseen -r alaindargelas  
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
   
@@ -453,8 +456,8 @@ jobs:
           issuetype: "Bug"
           summary: "Smoke test fail on XML/CSV from release ${{ needs.XML_Digest_and_raptor_build.outputs.releaseNO }}."
           description: "In an attempt to merge the release ${{ github.event.client_payload.new_release }} in Raptor, the smoke test fails. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          #extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
-          extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
+          extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
+          #extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
       env:
             JIRA_BASE_URL: https://rapidsilicon.atlassian.net
             JIRA_USER_EMAIL: nadeem.yaseen@rapidsilicon.com
