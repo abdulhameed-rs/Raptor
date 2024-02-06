@@ -45,12 +45,13 @@ jobs:
       id: decision
       run: |
             gh_event=`echo ${{ github.event_name }}`
-            if [ $gh_event == 'workflow_dispatch' ]
+            if [ $gh_event == 'repository_dispatch' ]
             then
                 branch_postfix=${{ github.event.client_payload.new_release }}
                 echo 'release_no=$branch_postfix' >> $GITHUB_ENV
             else
                 branch_postfix=${{ inputs.Release_Tag }}
+                echo 'release_no=$branch_postfix' >> $GITHUB_ENV
             fi
             echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             git branch -a 
