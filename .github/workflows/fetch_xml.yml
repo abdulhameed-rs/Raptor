@@ -4,12 +4,23 @@ on:
   #push:
   repository_dispatch:
     types: [digest_latest_Release]
+  workflow_dispatch:
+    inputs:
+      Release_Tag:
+        description: 'Tag of Release to be integrated'
+        default: ""
+        type: string
+        required: true
 
 jobs:
   XML_Digest_and_raptor_build: 
-    runs-on: ubuntu-latest  # job is matrix based so cannot run this job on self-hosted as it requires more runner 
+    runs-on: ubuntu-latest  # job is matrix based so cannot run this job on self-hosted as it requires more runner
+    permissions:
+      contents: read
+      pull-requests: write
     outputs:
       output1: ${{ steps.branch_name.outputs.b_name }}
+      rlease_no: ${{ steps.decision.outputs.releaseNO }}
       RUN_XML_TEST: ${{ steps.run_tests.outputs.run_xml_test }}
     defaults:
       run:
@@ -24,55 +35,41 @@ jobs:
       MODE: ${{ matrix.updates }}
   
     steps:
-    - name: ssh-agent
-      uses: webfactory/ssh-agent@v0.7.0
-      with: 
-        ssh-private-key: |
-          ${{ secrets.SSH_PRIVATE_KEY_VERIFIC_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA }}
-          ${{ secrets.SSH_PRIVATE_KEY_FOEDAG }}
-          ${{ secrets.SSH_PRIVATE_KEY_TCL }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_VERIFIC }}
-          ${{ secrets.SSH_PRIVATE_KEY_RTL_BENCH }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_PLUGINS }}
-          ${{ secrets.SSH_PRIVATE_KEY_ABC }}
-          ${{ secrets.SSH_PRIVATE_KEY_LOGIC_SYNTH }}
-          ${{ secrets.SSH_PRIVATE_KEY_JIRA_TESTCASE }}
-          ${{ secrets.SSH_PRIVATE_KEY_LITEX_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_RAPTOR_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_IP_CATALOG }}
-          ${{ secrets.SSH_PRIVATE_KEY_BACKEND }}
-          ${{ secrets.SSH_PRIVATE_KEY_EMBEDDED_COMMON_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_U_BOOT_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_ZEPHYR_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA_PD_CASTOR_RS }}
-          ${{ secrets.SSH_RS_FPGA_PRIMITIVES }}
-
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        persist-credentials: false
 
-    - name: switch to branch
+    - name: switch branch & decide tag or latest
+      id: decision
       run: |
+            gh_event=`echo ${{ github.event_name }}`
+            if [ $gh_event == 'workflow_dispatch' ]
+            then
+                branch_postfix=${{ github.event.client_payload.new_release }}
+                echo 'release_no=$branch_postfix' >> $GITHUB_ENV
+            else
+                branch_postfix=${{ inputs.Release_Tag }}
+            fi
+            echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             git branch -a 
-            BRANCH='${{ matrix.updates }}_${{ github.event.client_payload.new_release }}'
+            BRANCH='${{ matrix.updates }}_$branch_postfix'
             set +e
             git ls-remote --exit-code --heads origin $BRANCH >/dev/null 2>&1
             EXIT_CODE=$?
             if [[ $EXIT_CODE == '0' ]]; then
                 echo "Git branch '$BRANCH' exists in the remote repository"
                 main_last_commit=`git log -1 --pretty=format:"%H"`
-                git checkout ${{ matrix.updates }}_${{ github.event.client_payload.new_release }}
-                git pull origin ${{ matrix.updates }}_${{ github.event.client_payload.new_release }}
+                git checkout $BRANCH
+                git pull origin $BRANCH
                 git reset --hard $main_last_commit
             elif [[ $EXIT_CODE == '2' ]]; then
                 echo "Git branch '$BRANCH' does not exist in the remote repository"
             fi
 
     - name: Download Latest Release
+      if: ${{ github.event_name == 'repository_dispatch' }}
       uses: robinraju/release-downloader@v1.8
       with:
         repository: "RapidSilicon/SpicaProduct"
@@ -81,9 +78,28 @@ jobs:
         zipBall: true
         token: "${{ secrets.OPENFPGA_CASTOR_XML_MERGE }}"
 
+    - name: Download Release using tag
+      id: tag_release
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      uses: robinraju/release-downloader@v1.8
+      with:
+        repository: "RapidSilicon/SpicaProduct"
+        tag: ${{ inputs.Release_Tag }}
+        tarBall: true
+        zipBall: true
+        token: "${{ secrets.OPENFPGA_CASTOR_XML_MERGE }}"
+
     - name:  Unzip and copy all the files
       run: |
-          echo "payload: ${{ github.event.client_payload.new_release }}"
+          gh_event=`echo ${{ github.event_name }}`
+          if [ $gh_event == 'repository_dispatch' ]
+          then
+              echo "payload: ${{ github.event.client_payload.new_release }}"
+          else
+              echo "Tag is: ${{steps.tag_release.outputs.tag_name}}"
+              echo "input tag was: ${{ env.release_no }}"
+              echo "Files are: ${{ fromJson(steps.tag_release.outputs.downloaded_files)[0] }}"
+          fi
           for file in $(ls -1 $GITHUB_WORKSPACE/*.tar.gz)
           do
           echo $file
@@ -107,7 +123,7 @@ jobs:
                 ;;
             "xml")
                 echo "updates are from ${{ matrix.updates }}"
-                echo "b_name=${{ matrix.updates }}_${{ github.event.client_payload.new_release }}" >> "$GITHUB_OUTPUT"
+                echo "b_name=${{ matrix.updates }}_${{ env.release_no }}" >> "$GITHUB_OUTPUT"
                 extension=xml
                 echo "EXTENSION=$extension" >> $GITHUB_ENV
                 echo "path_to_commit=etc/devices/**/*.xml etc/device.xml etc/devices/**/*.csv" >> $GITHUB_ENV
@@ -204,12 +220,13 @@ jobs:
       if: contains(steps.is_change.outputs.has_changed, 'true')
       uses: GuillaumeFalourd/git-commit-push@v1.3
       with:
-        email: nadeem.yaseen@rapidsilicon.com
-        name: nadeemyaseen-rs
-        commit_message: Added ${{ matrix.updates }} files from ${{ github.event.client_payload.new_release }}
+        email: pu.engineerg@gmail.com
+        name: NadeemYaseen
+        commit_message: Added ${{ matrix.updates }} files from release ${{ env.release_no }}
         files: "${{ env.path_to_commit }}"
-        target_branch: ${{ matrix.updates }}_${{ github.event.client_payload.new_release }}
+        target_branch: ${{ matrix.updates }}_${{ env.release_no }}
         force: true
+        access_token: ${{ github.token }}
 
     - name: Upload Raptor Build
       if: ${{ matrix.updates == 'xml' &&  steps.is_change.outputs.has_changed == 'true'}}
@@ -224,8 +241,8 @@ jobs:
       with:
           project: EDA
           issuetype: "Bug"
-          summary: "Raptor build fail while digesting release ${{ github.event.client_payload.new_release }}."
-          description: "In an attempt to merge the release ${{ github.event.client_payload.new_release }} in Raptor, the Raptor compilation. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          summary: "Raptor build fail while digesting release ${{ env.release_no }}."
+          description: "In an attempt to merge the release ${{ env.release_no }} in Raptor, the Raptor compilation fail. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
       env:
             JIRA_BASE_URL: https://rapidsilicon.atlassian.net
@@ -236,11 +253,11 @@ jobs:
       if: ${{ matrix.updates == 'ric' &&  steps.is_change.outputs.has_changed == 'true'}}
       run: |
             gh pr create -B main \
-            -H ${{ matrix.updates }}_${{ github.event.client_payload.new_release }}  \
-            -a nadeemyaseen-rs -r alain-rs  \
+            -H ${{ matrix.updates }}_${{ env.release_no }}  \
             -l "openfpga_castor_pd_XMLs"  \
-            --title 'Pulling release ${{ github.event.client_payload.new_release }} into main.' \
-            --body 'An automated PR to check in New RIC TCL files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'         
+            --title 'Pulling release ${{ env.alaindargelas }} into main.' \
+            --body 'An automated PR to check in New RIC TCL files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+            -a NadeemYaseen #-r alaindargelas  
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
@@ -255,38 +272,12 @@ jobs:
         shell: bash
     
     steps:
-    - name: Install pre-requisit
+    - name: Install pre-requisite
       run: |
             apt update && apt upgrade -y && apt install sudo git openssh-client software-properties-common wget dialog apt-utils -y 
-             
-    - name: ssh-agent
-      uses: webfactory/ssh-agent@v0.7.0
-      with: 
-        ssh-private-key: |
-          ${{ secrets.SSH_PRIVATE_KEY_VERIFIC_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA }}
-          ${{ secrets.SSH_PRIVATE_KEY_FOEDAG }}
-          ${{ secrets.SSH_PRIVATE_KEY_TCL }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_VERIFIC }}
-          ${{ secrets.SSH_PRIVATE_KEY_RTL_BENCH }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_PLUGINS }}
-          ${{ secrets.SSH_PRIVATE_KEY_ABC }}
-          ${{ secrets.SSH_PRIVATE_KEY_LOGIC_SYNTH }}
-          ${{ secrets.SSH_PRIVATE_KEY_JIRA_TESTCASE }}
-          ${{ secrets.SSH_PRIVATE_KEY_LITEX_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_RAPTOR_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_IP_CATALOG }}
-          ${{ secrets.SSH_PRIVATE_KEY_BACKEND }}
-          ${{ secrets.SSH_PRIVATE_KEY_EMBEDDED_COMMON_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_U_BOOT_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_ZEPHYR_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA_PD_CASTOR_RS }}
-          ${{ secrets.SSH_RS_FPGA_PRIMITIVES }}
 
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -360,7 +351,7 @@ jobs:
             echo "true" > decision.txt
             tar -cvzf decision.tar.gz decision.txt          
 
-    - name: Set the fail result
+    - name: Set the failed result
       if: ${{ failure() }}
       run: |
             echo "false" > decision.txt
@@ -371,7 +362,7 @@ jobs:
       run: |
             tar -cvzf all_test.tar.gz results          
             
-    - name: Upload tests logs
+    - name: Upload test logs
       if: ${{ always() }}
       uses: actions/upload-artifact@v3
       with:
@@ -389,36 +380,13 @@ jobs:
     needs: [test_xmls,XML_Digest_and_raptor_build]
     if: ${{ always () }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
   
     steps:
-    - name: ssh-agent
-      uses: webfactory/ssh-agent@v0.7.0
-      with: 
-        ssh-private-key: |
-          ${{ secrets.SSH_PRIVATE_KEY_VERIFIC_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA }}
-          ${{ secrets.SSH_PRIVATE_KEY_FOEDAG }}
-          ${{ secrets.SSH_PRIVATE_KEY_TCL }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_VERIFIC }}
-          ${{ secrets.SSH_PRIVATE_KEY_RTL_BENCH }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS }}
-          ${{ secrets.SSH_PRIVATE_KEY_YOSYS_PLUGINS }}
-          ${{ secrets.SSH_PRIVATE_KEY_ABC }}
-          ${{ secrets.SSH_PRIVATE_KEY_LOGIC_SYNTH }}
-          ${{ secrets.SSH_PRIVATE_KEY_JIRA_TESTCASE }}
-          ${{ secrets.SSH_PRIVATE_KEY_LITEX_RS }}
-          ${{ secrets.SSH_PRIVATE_KEY_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_RAPTOR_TOOLS }}
-          ${{ secrets.SSH_PRIVATE_KEY_IP_CATALOG }}
-          ${{ secrets.SSH_PRIVATE_KEY_BACKEND }}
-          ${{ secrets.SSH_PRIVATE_KEY_EMBEDDED_COMMON_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_U_BOOT_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_ZEPHYR_DEV }}
-          ${{ secrets.SSH_PRIVATE_KEY_OPENFPGA_PD_CASTOR_RS }}
-          ${{ secrets.SSH_RS_FPGA_PRIMITIVES }}
-
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -457,15 +425,15 @@ jobs:
       run: |
             echo "Decision: ${{ steps.test_decision.outputs.TEST_RESULT }}"            
             
-    - name: Create PR if test on all devcies pass
+    - name: Create PR if test on all devices pass
       if: contains(steps.test_decision.outputs.TEST_RESULT, 'true') 
       run: |
             gh pr create -B main \
             -H ${{ needs.XML_Digest_and_raptor_build.outputs.output1 }}   \
-            -a nadeemyaseen-rs -r alain-rs  \
             -l "openfpga_castor_pd_XMLs"  \
-            --title 'Pulling release ${{ github.event.client_payload.new_release }} into main.' \
-            --body 'An automated PR to check in New XML/CSV files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            --title 'Pulling release ${{ needs.XML_Digest_and_raptor_build.outputs.releaseNO }} into main.' \
+            --body 'An automated PR to check in New XML files from Release. Click on the link to see tests/batch results ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+            -a NadeemYaseen #-r alaindargelas  
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
   
@@ -475,10 +443,10 @@ jobs:
       with:
           project: EDA
           issuetype: "Bug"
-          summary: "Smoke test fail on XML/CSV from release ${{ github.event.client_payload.new_release }}."
+          summary: "Smoke test fail on XML/CSV from release ${{ needs.XML_Digest_and_raptor_build.outputs.releaseNO }}."
           description: "In an attempt to merge the release ${{ github.event.client_payload.new_release }} in Raptor, the smoke test fails. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
-          #extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
+          #extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
+          extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
       env:
             JIRA_BASE_URL: https://rapidsilicon.atlassian.net
             JIRA_USER_EMAIL: nadeem.yaseen@rapidsilicon.com
