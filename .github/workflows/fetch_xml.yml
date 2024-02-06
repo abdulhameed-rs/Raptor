@@ -48,12 +48,13 @@ jobs:
             if [ $gh_event == 'repository_dispatch' ]
             then
                 branch_postfix=${{ github.event.client_payload.new_release }}
-                echo 'release_no=$branch_postfix' >> $GITHUB_ENV
+                echo "release_no=$branch_postfix" >> $GITHUB_ENV
+                echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             else
                 branch_postfix=${{ inputs.Release_Tag }}
-                echo 'release_no=$branch_postfix' >> $GITHUB_ENV
+                echo "release_no=$branch_postfix" >> $GITHUB_ENV
+                echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             fi
-            echo "releaseNO=$branch_postfix" >> "$GITHUB_OUTPUT"
             git branch -a 
             BRANCH='${{ matrix.updates }}_$branch_postfix'
             set +e
