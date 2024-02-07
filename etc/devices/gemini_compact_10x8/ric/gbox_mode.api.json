@@ -1,6 +1,6 @@
 {
-  "O_BUF": {
-    "IOSTANDARD==LVCMOS_12": [
+  "gbox_mode": {
+    "MODE_BP_DIR_A_RX": [
       {
         "attr": "RATE",
         "value": "Three"
@@ -23,11 +23,15 @@
       },
       {
         "attr": "TX_BYPASS",
-        "value": "TX_bypass"
+        "value": "TX_gear_on"
       },
       {
         "attr": "TX_CLK_PHASE",
         "value": "TX_phase_0"
+      },
+      {
+        "attr": "TX_DLY",
+        "value": "6'd0"
       },
       {
         "attr": "RX_DDR_MODE",
@@ -35,11 +39,11 @@
       },
       {
         "attr": "RX_BYPASS",
-        "value": "RX_gear_on"
+        "value": "RX_bypass"
       },
       {
         "attr": "RX_DLY",
-        "value": "6'd0"
+        "value": "4'd0"
       },
       {
         "attr": "RX_DPA_MODE",
@@ -51,11 +55,11 @@
       },
       {
         "attr": "TX_MODE",
-        "value": "TX_enable"
+        "value": "TX_disable"
       },
       {
         "attr": "RX_MODE",
-        "value": "RX_disable"
+        "value": "RX_enable"
       },
       {
         "attr": "RX_CLOCK_IO",
@@ -83,10 +87,10 @@
       },
       {
         "attr": "MC",
-        "value": "4'd1"
+        "value": "4'd0"
       }
     ],
-    "IOSTANDARD==LVCMOS_15": [
+    "MODE_BP_DIR_A_TX": [
       {
         "attr": "RATE",
         "value": "Three"
@@ -116,6 +120,10 @@
         "value": "TX_phase_0"
       },
       {
+        "attr": "TX_DLY",
+        "value": "6'd0"
+      },
+      {
         "attr": "RX_DDR_MODE",
         "value": "RX_direct"
       },
@@ -125,7 +133,7 @@
       },
       {
         "attr": "RX_DLY",
-        "value": "6'd0"
+        "value": "4'd0"
       },
       {
         "attr": "RX_DPA_MODE",
@@ -169,10 +177,10 @@
       },
       {
         "attr": "MC",
-        "value": "4'd1"
+        "value": "4'd0"
       }
     ],
-    "IOSTANDARD==LVCMOS_18_HP": [
+    "MODE_BP_DIR_B_RX": [
       {
         "attr": "RATE",
         "value": "Three"
@@ -195,11 +203,15 @@
       },
       {
         "attr": "TX_BYPASS",
-        "value": "TX_bypass"
+        "value": "TX_gear_on"
       },
       {
         "attr": "TX_CLK_PHASE",
         "value": "TX_phase_0"
+      },
+      {
+        "attr": "TX_DLY",
+        "value": "6'd0"
       },
       {
         "attr": "RX_DDR_MODE",
@@ -207,11 +219,11 @@
       },
       {
         "attr": "RX_BYPASS",
-        "value": "RX_gear_on"
+        "value": "RX_bypass"
       },
       {
         "attr": "RX_DLY",
-        "value": "6'd0"
+        "value": "4'd0"
       },
       {
         "attr": "RX_DPA_MODE",
@@ -223,11 +235,11 @@
       },
       {
         "attr": "TX_MODE",
-        "value": "TX_enable"
+        "value": "TX_disable"
       },
       {
         "attr": "RX_MODE",
-        "value": "RX_disable"
+        "value": "RX_enable"
       },
       {
         "attr": "RX_CLOCK_IO",
@@ -255,10 +267,10 @@
       },
       {
         "attr": "MC",
-        "value": "4'd1"
+        "value": "4'd0"
       }
     ],
-    "IOSTANDARD==LVCMOS_18_HR": [
+    "MODE_BP_DIR_B_TX": [
       {
         "attr": "RATE",
         "value": "Three"
@@ -288,6 +300,10 @@
         "value": "TX_phase_0"
       },
       {
+        "attr": "TX_DLY",
+        "value": "6'd0"
+      },
+      {
         "attr": "RX_DDR_MODE",
         "value": "RX_direct"
       },
@@ -297,7 +313,7 @@
       },
       {
         "attr": "RX_DLY",
-        "value": "6'd0"
+        "value": "4'd0"
       },
       {
         "attr": "RX_DPA_MODE",
@@ -341,179 +357,7 @@
       },
       {
         "attr": "MC",
-        "value": "4'd1"
-      }
-    ],
-    "IOSTANDARD==LVCMOS_25": [
-      {
-        "attr": "RATE",
-        "value": "Three"
-      },
-      {
-        "attr": "MASTER_SLAVE",
-        "value": "Slave"
-      },
-      {
-        "attr": "PEER_IS_ON",
-        "value": "PEER_off"
-      },
-      {
-        "attr": "TX_CLOCK_IO",
-        "value": "TX_normal_IO"
-      },
-      {
-        "attr": "TX_DDR_MODE",
-        "value": "TX_direct"
-      },
-      {
-        "attr": "TX_BYPASS",
-        "value": "TX_bypass"
-      },
-      {
-        "attr": "TX_CLK_PHASE",
-        "value": "TX_phase_0"
-      },
-      {
-        "attr": "RX_DDR_MODE",
-        "value": "RX_direct"
-      },
-      {
-        "attr": "RX_BYPASS",
-        "value": "RX_gear_on"
-      },
-      {
-        "attr": "RX_DLY",
-        "value": "6'd0"
-      },
-      {
-        "attr": "RX_DPA_MODE",
-        "value": "RX_dpa_off"
-      },
-      {
-        "attr": "RX_MIPI_MODE",
-        "value": "RX_mipi_off"
-      },
-      {
-        "attr": "TX_MODE",
-        "value": "TX_enable"
-      },
-      {
-        "attr": "RX_MODE",
-        "value": "RX_disable"
-      },
-      {
-        "attr": "RX_CLOCK_IO",
-        "value": "RX_normal_IO"
-      },
-      {
-        "attr": "DFEN",
-        "value": "SingleEnded"
-      },
-      {
-        "attr": "SR",
-        "value": "SR_disable"
-      },
-      {
-        "attr": "PE",
-        "value": "PE_disable"
-      },
-      {
-        "attr": "PUD",
-        "value": "PUD_disable"
-      },
-      {
-        "attr": "DFODTEN",
-        "value": "DF_odt_disable"
-      },
-      {
-        "attr": "MC",
-        "value": "4'd1"
-      }
-    ],
-    "IOSTANDARD==LVCMOS_33": [
-      {
-        "attr": "RATE",
-        "value": "Three"
-      },
-      {
-        "attr": "MASTER_SLAVE",
-        "value": "Slave"
-      },
-      {
-        "attr": "PEER_IS_ON",
-        "value": "PEER_off"
-      },
-      {
-        "attr": "TX_CLOCK_IO",
-        "value": "TX_normal_IO"
-      },
-      {
-        "attr": "TX_DDR_MODE",
-        "value": "TX_direct"
-      },
-      {
-        "attr": "TX_BYPASS",
-        "value": "TX_bypass"
-      },
-      {
-        "attr": "TX_CLK_PHASE",
-        "value": "TX_phase_0"
-      },
-      {
-        "attr": "RX_DDR_MODE",
-        "value": "RX_direct"
-      },
-      {
-        "attr": "RX_BYPASS",
-        "value": "RX_gear_on"
-      },
-      {
-        "attr": "RX_DLY",
-        "value": "6'd0"
-      },
-      {
-        "attr": "RX_DPA_MODE",
-        "value": "RX_dpa_off"
-      },
-      {
-        "attr": "RX_MIPI_MODE",
-        "value": "RX_mipi_off"
-      },
-      {
-        "attr": "TX_MODE",
-        "value": "TX_enable"
-      },
-      {
-        "attr": "RX_MODE",
-        "value": "RX_disable"
-      },
-      {
-        "attr": "RX_CLOCK_IO",
-        "value": "RX_normal_IO"
-      },
-      {
-        "attr": "DFEN",
-        "value": "SingleEnded"
-      },
-      {
-        "attr": "SR",
-        "value": "SR_disable"
-      },
-      {
-        "attr": "PE",
-        "value": "PE_disable"
-      },
-      {
-        "attr": "PUD",
-        "value": "PUD_disable"
-      },
-      {
-        "attr": "DFODTEN",
-        "value": "DF_odt_disable"
-      },
-      {
-        "attr": "MC",
-        "value": "4'd1"
+        "value": "4'd0"
       }
     ],
     "default": [
@@ -546,6 +390,10 @@
         "value": "TX_phase_0"
       },
       {
+        "attr": "TX_DLY",
+        "value": "6'd0"
+      },
+      {
         "attr": "RX_DDR_MODE",
         "value": "RX_direct"
       },
@@ -555,7 +403,7 @@
       },
       {
         "attr": "RX_DLY",
-        "value": "6'd0"
+        "value": "4'd0"
       },
       {
         "attr": "RX_DPA_MODE",
