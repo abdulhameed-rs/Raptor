@@ -338,6 +338,9 @@ jobs:
         image: ghcr.io/${{ github.repository_owner }}/raptor:centos7latest
         options: -v ${{ github.workspace }}:/work
         run: |
+            wget https://boostorg.jfrog.io/artifactory/main/release/1.74.0/source/boost_1_74_0.tar.gz #Licenescc_WAR
+            tar -xzf boost_1_* && ls -l   #Licensecc_WAR
+            cd boost_1_* && ./bootstrap.sh &&  ./b2 install --with=all    #Licensecc_WAR   
             cd work && make clean
             source /opt/rh/devtoolset-11/enable
             p_device=`cat DEFAULT_DEVICES`
@@ -358,6 +361,9 @@ jobs:
             cat /opt/instl_dir/share/raptor/etc/device.xml
             ls -l /opt/instl_dir/share/raptor/etc/devices/*
             ls -l /opt/instl_dir/bin
+            cd /work && v=`/work/build/bin/raptor --version`
+            postfix=`echo $v | awk '{print $11 "_" $14}'`
+            tar -cvzf licgen_$postfix.tar.gz /work/Raptor_Tools/OpenLM/licensecc/install /work/build/bin/raptor.lic
 
     - name: Print server resource
       if: success() || failure()
@@ -388,7 +394,16 @@ jobs:
          port: ${{ secrets.FTP_PORT }}
          source: "./Raptor_Tools/upload/*"
          target: "/home/rsbuilder/Raptor"
-       
+#Licensecc_WAR       
+    - name: Archive regression artifacts
+      if: "${{ matrix.mode == 'production' }}"
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: licgen.tar.gz
+        path: |
+          ${{ github.workspace }}/licgen_*
+
+
 
 # Reference: https://github.com/eyllanesc/69108420/blob/main/.github/workflows/test.yml
   msys2-gcc:
