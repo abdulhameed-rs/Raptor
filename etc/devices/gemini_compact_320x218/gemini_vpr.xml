@@ -32,7 +32,7 @@
     <model name="adder_carry">
       <input_ports>
         <port name="p" combinational_sink_ports="sumout cout"/>
-        <port name="g" combinational_sink_ports="sumout cout"/>
+        <port name="g" combinational_sink_ports="cout"/>
         <port name="cin" combinational_sink_ports="sumout cout"/>
       </input_ports>
       <output_ports>
@@ -1216,7 +1216,6 @@
                 <output name="sumout" num_pins="1"/>
                 <output name="cout" num_pins="1"/>
                 <delay_constant max="3.66e-11" min="1.83e-11" in_port="adder_carry.p" out_port="adder_carry.sumout"/>
-                <delay_constant max="8.784e-11" min="4.392e-11" in_port="adder_carry.g" out_port="adder_carry.sumout"/>
                 <delay_constant max="3.6966e-11" min="1.8483e-11" in_port="adder_carry.cin" out_port="adder_carry.sumout"/>
                 <delay_constant max="2.8365e-11" min="1.41825e-11" in_port="adder_carry.p" out_port="adder_carry.cout"/>
                 <delay_constant max="3.843e-11" min="1.9215e-11" in_port="adder_carry.g" out_port="adder_carry.cout"/>
@@ -1593,7 +1592,6 @@
                 <output name="sumout" num_pins="1"/>
                 <output name="cout" num_pins="1"/>
                 <delay_constant max="3.66e-11" min="1.83e-11" in_port="adder_carry.p" out_port="adder_carry.sumout"/>
-                <delay_constant max="8.784e-11" min="4.392e-11" in_port="adder_carry.g" out_port="adder_carry.sumout"/>
                 <delay_constant max="3.6966e-11" min="1.8483e-11" in_port="adder_carry.cin" out_port="adder_carry.sumout"/>
                 <delay_constant max="2.8365e-11" min="1.41825e-11" in_port="adder_carry.p" out_port="adder_carry.cout"/>
                 <delay_constant max="3.843e-11" min="1.9215e-11" in_port="adder_carry.g" out_port="adder_carry.cout"/>
