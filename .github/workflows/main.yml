@@ -338,6 +338,7 @@ jobs:
         image: ghcr.io/${{ github.repository_owner }}/raptor:centos7latest
         options: -v ${{ github.workspace }}:/work
         run: |
+            yum install -y python-devel && source /opt/rh/devtoolset-11/enable            
             wget https://boostorg.jfrog.io/artifactory/main/release/1.74.0/source/boost_1_74_0.tar.gz #Licenescc_WAR
             tar -xzf boost_1_* && ls -l   #Licensecc_WAR
             cd boost_1_* && ./bootstrap.sh &&  ./b2 install --with=all    #Licensecc_WAR   
