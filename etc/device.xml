@@ -6,7 +6,7 @@
         <resource type="bram" num="176" label="36K BRAMs"/>
         <resource type="dsp" num="176" label="DSPs"/>
         <resource type="carry_length" num="528" label="Carry Length"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_104x68/gemini_vpr.xml"/>
         <internal type="device_size" name="castor104x68_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -67,7 +67,7 @@
         <resource type="bram" num="260" label="36K BRAMs"/>
         <resource type="dsp" num="208" label="DSPs"/>
         <resource type="carry_length" num="624" label="Carry Length"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_104x68/gemini_vpr.xml"/>
         <internal type="device_size" name="castor104x68_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -126,7 +126,7 @@
         <resource type="bram" num="56" label="36K BRAMs"/>
         <resource type="dsp" num="56" label="DSPs"/>
         <resource type="carry_length" num="336"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_62x44/gemini_vpr.xml"/>
         <internal type="device_size" name="castor62x44_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -156,7 +156,7 @@
         <resource type="bram" num="176" label="36K BRAMs"/>
         <resource type="dsp" num="176" label="DSPs"/>
         <resource type="carry_length" num="528" label="Carry Length"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_104x68/gemini_vpr.xml"/>
         <internal type="device_size" name="castor104x68_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -186,7 +186,7 @@
         <resource type="bram" num="154"/>
         <resource type="dsp" num="154"/>
         <resource type="carry_length" num="528"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_104x68/gemini_vpr.xml"/>
         <internal type="device_size" name="castor104x68_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -228,7 +228,49 @@
         <resource type="uart" num="4"/>
         <resource type="jtag" num="5"/>
         <resource type="pwm" num="4"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
+        <internal type="vpr_arch" file="devices/gemini_compact_62x44/gemini_vpr.xml"/>
+        <internal type="device_size" name="castor62x44_heterogeneous"/>
+        <internal type="lut_size" num="6"/>
+        <internal type="channel_width" num="160"/>
+        <internal type="openfpga_arch" file="devices/gemini_compact_62x44/gemini_openfpga.xml"/>
+        <internal type="bitstream_settings" file="devices/gemini_compact_62x44/bitstream_setting.xml"/>
+        <internal type="sim_settings" file="devices/gemini_compact_62x44/fixed_sim_openfpga.xml"/>
+        <internal type="repack_settings" file="devices/gemini_compact_62x44/fpga_repack_constraints.xml"/>
+        <internal type="fabric_key" file=""/>
+        <internal type="pinmap_xml" file=""/>
+        <internal type="pcf_xml" file="devices/gemini_compact_62x44/pin_constraints.xml"/>
+        <internal type="pinmap_csv" file="devices/gemini_compact_62x44/Virgo_Pin_Table.csv"/>
+        <internal type="pb_pin_fixup" name=""/>
+        <internal type="plugin_lib" name="synth-rs"/>
+        <internal type="plugin_func" name="synth_rs"/>
+        <internal type="technology" name="genesis3"/>
+        <internal type="synth_type" name="RS"/>
+        <internal type="synth_opts" name=""/>
+        <internal type="bitstream_enabled" num="false"/>
+        <internal type="pin_constraint_enabled" num="true"/>
+        <internal type="vpr_opts" name="--allow_dangling_combinational_nodes on --place_delta_delay_matrix_calculation_method dijkstra"/>
+     </device>
+     <device name="1VG28" series="Virgo" family="Virgo" package="F484A" pin_count="272" speedgrade="-1" core_voltage="0.8V">
+        <resource type="io" num="240" label="I/O"/>
+        <resource type="lut" num="17472" label="LUT6s"/>
+        <resource type="ff" num="34944" label="FFs"/>
+        <resource type="bram" num="56" label="36K BRAMs"/>
+        <resource type="dsp" num="56" label="DSPs"/>
+        <resource type="carry_length" num="336"/>
+        <resource type="clocks" num="16"/>
+        <resource type="plls" num="2"/>
+        <resource type="hr_io" num="160"/>
+        <resource type="hp_io" num="80"/>
+        <resource type="soc_io" num="16"/>
+        <resource type="usb" num="0"/>
+        <resource type="gbe" num="0"/>
+        <resource type="ddr" num="0"/>
+        <resource type="i2c" num="2"/>
+        <resource type="uart" num="4"/>
+        <resource type="jtag" num="5"/>
+        <resource type="pwm" num="4"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_62x44/gemini_vpr.xml"/>
         <internal type="device_size" name="castor62x44_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -258,7 +300,7 @@
         <resource type="bram" num="176" label="36K BRAMs"/>
         <resource type="dsp" num="176" label="DSPs"/>
         <resource type="carry_length" num="528"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_104x68/gemini_vpr.xml"/>
         <internal type="device_size" name="castor104x68_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -318,7 +360,7 @@
         <resource type="bram" num="154"/>
         <resource type="dsp" num="154"/>
         <resource type="carry_length" num="336"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_62x44/gemini_vpr.xml"/>
         <internal type="device_size" name="castor62x44_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -348,7 +390,7 @@
         <resource type="bram" num="154"/>
         <resource type="dsp" num="154"/>
         <resource type="carry_length" num="48"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_10x8/gemini_vpr.xml"/>
         <internal type="device_size" name="castor10x8_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -482,7 +524,7 @@
         <resource type="bram" num="312"/>
         <resource type="dsp" num="312"/>
         <resource type="carry_length" num="48"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_10x8/gemini_vpr.xml"/>
         <internal type="device_size" name="castor10x8_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -540,7 +582,7 @@
         <resource type="bram" num="588"/>
         <resource type="dsp" num="588"/>
         <resource type="carry_length" num="1008"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_188x128/gemini_vpr.xml"/>
         <internal type="device_size" name="castor188x128_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -570,7 +612,7 @@
         <resource type="bram" num="1320"/>
         <resource type="dsp" num="1080"/>
         <resource type="carry_length" num="1440"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_266x182/gemini_vpr.xml"/>
         <internal type="device_size" name="castor266x182_heterogeneous"/>
         <internal type="lut_size" num="6"/>
@@ -600,7 +642,7 @@
         <resource type="bram" num="1872"/>
         <resource type="dsp" num="1584"/>
         <resource type="carry_length" num="1728"/>
-        <internal type="tag_version" name="v1.6.232"/>
+        <internal type="tag_version" name="v1.6.244"/>
         <internal type="vpr_arch" file="devices/gemini_compact_320x218/gemini_vpr.xml"/>
         <internal type="device_size" name="castor320x218_heterogeneous"/>
         <internal type="lut_size" num="6"/>
