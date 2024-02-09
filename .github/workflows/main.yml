@@ -396,7 +396,7 @@ jobs:
          source: "./Raptor_Tools/upload/*"
          target: "/home/rsbuilder/Raptor"
 #Licensecc_WAR       
-    - name: Archive regression artifacts
+    - name: Archive lccgen
       if: "${{ matrix.mode == 'production' }}"
       uses: actions/upload-artifact@v3.1.0
       with:
