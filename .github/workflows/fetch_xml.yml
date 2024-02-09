@@ -454,7 +454,7 @@ jobs:
       with:
           project: EDA
           issuetype: "Bug"
-          summary: "Smoke test fail on XML/CSV from release ${{ needs.XML_Digest_and_raptor_build.outputs.releaseNO }}."
+          summary: "Smoke test fail on XML/CSV from release ${{ needs.XML_Digest_and_raptor_build.outputs.rlease_no }}."
           description: "In an attempt to merge the release ${{ github.event.client_payload.new_release }} in Raptor, the smoke test fails. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
           #extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
