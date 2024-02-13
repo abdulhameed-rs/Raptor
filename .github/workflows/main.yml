@@ -364,7 +364,7 @@ jobs:
             ls -l /opt/instl_dir/bin
             cd /work && v=`/work/build/bin/raptor --version`
             postfix=`echo $v | awk '{print $11 "_" $14}'`
-            tar -cvzf licgen_$postfix.tar.gz /work/Raptor_Tools/OpenLM/licensecc/install /work/build/bin/raptor.lic
+            tar -cvzf licgen_$postfix.tar.gz /work/Raptor_Tools/OpenLM/licensecc/install /work/build/bin/raptor.lic /work/projects
 
     - name: Print server resource
       if: success() || failure()
