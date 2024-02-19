@@ -30,7 +30,7 @@
 
 //License retrieval configuration
 #define FIND_LICENSE_NEAR_MODULE true
-#define FIND_LICENSE_WITH_ENV_VAR false
+#define FIND_LICENSE_WITH_ENV_VAR true
 
 /**
  * License file name extension
