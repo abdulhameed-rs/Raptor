@@ -159,10 +159,12 @@ jobs:
         #./build/bin/Flex_LM/lmutil lmhostid
         #export LM_LICENSE_FILE=${GITHUB_WORKSPACE}/.github/bin/.raptor.lic
         d_test=$(echo "${{ env.p_devices }}" | cut -d ',' -f 1)
-        ./Raptor_Tools/OpenLM/licensecc/install/bin/lccgen license issue -p projects/Raptor -f Raptor,$d_test -o build/bin/raptor.lic
+        ./Raptor_Tools/OpenLM/licensecc/install/bin/lccgen license issue --primary-key $GITHUB_WORKSPACE/projects/Raptor/private_key.rsa -f Raptor,$d_test -o build/bin/raptor.lic
         cat build/bin/raptor.lic
         echo "the device is $d_test"
-        ./build/bin/raptor --batch --mute --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device $d_test
+        export LICENSE_LOCATION=$GITHUB_WORKSPACE/build/bin/raptor.lic
+        echo "license file location is $LICENSE_LOCATION"
+        ./build/bin/raptor --batch --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device $d_test
 
     - name: Valgrind & Debug
       if: matrix.mode == 'valgrind'
