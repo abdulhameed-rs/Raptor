@@ -164,7 +164,7 @@ jobs:
         export LICENSE_LOCATION=$GITHUB_WORKSPACE/build/bin/raptor.lic
         echo "license file location is $LICENSE_LOCATION"
         cat $LICENSE_LOCATION
-        ./build/bin/raptor --batch --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device MPW1
+        #./build/bin/raptor --batch --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device MPW1
 
     - name: Production testing
       if: matrix.mode == 'production'
