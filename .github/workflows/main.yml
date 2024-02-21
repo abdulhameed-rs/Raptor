@@ -166,6 +166,16 @@ jobs:
         cat $LICENSE_LOCATION
         ./build/bin/raptor --batch --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device MPW1
 
+    - name: Production testing
+      if: matrix.mode == 'production'
+      run: |
+        ./Raptor_Tools/OpenLM/licensecc/install/bin/lccgen license issue --primary-key $GITHUB_WORKSPACE/projects/Raptor/private_key.rsa -f Raptor,MPW1 -o build/bin/raptor.lic
+        echo "the device is MPW1"
+        export LICENSE_LOCATION=$GITHUB_WORKSPACE/build/bin/raptor.lic
+        echo "license file location is $LICENSE_LOCATION"
+        cat $LICENSE_LOCATION
+        ./build/bin/raptor --batch --script tests/tcl_examples/and2_verilog/run_raptor.tcl --device MPW1
+
     - name: Valgrind & Debug
       if: matrix.mode == 'valgrind'
       run: |
