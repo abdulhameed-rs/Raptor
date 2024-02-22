@@ -2053,6 +2053,7 @@
             <direct name="direct1" input="dsp_lr.a_i" output="RS_DSP_MULTADD.a"/>
             <direct name="direct2" input="dsp_lr.b_i" output="RS_DSP_MULTADD.b"/>
             <direct name="direct3" input="RS_DSP_MULTADD.z" output="dsp_lr.z_o"/>
+            <direct name="direct3b" input="RS_DSP_MULTADD.dly_b" output="dsp_lr.dly_b_o"/>
             <direct name="direct4" input="dsp_lr.unsigned_a" output="RS_DSP_MULTADD.unsigned_a"/>
             <direct name="direct5" input="dsp_lr.unsigned_b" output="RS_DSP_MULTADD.unsigned_b"/>
             <direct name="direct9" input="dsp_lr.subtract" output="RS_DSP_MULTADD.subtract"/>
@@ -2097,6 +2098,7 @@
             <direct name="direct1" input="dsp_lr.a_i" output="RS_DSP_MULTADD_REGIN.a"/>
             <direct name="direct2" input="dsp_lr.b_i" output="RS_DSP_MULTADD_REGIN.b"/>
             <direct name="direct3" input="RS_DSP_MULTADD_REGIN.z" output="dsp_lr.z_o"/>
+            <direct name="direct3b" input="RS_DSP_MULTADD_REGIN.dly_b" output="dsp_lr.dly_b_o"/>
             <direct name="direct4" input="dsp_lr.unsigned_a" output="RS_DSP_MULTADD_REGIN.unsigned_a"/>
             <direct name="direct5" input="dsp_lr.unsigned_b" output="RS_DSP_MULTADD_REGIN.unsigned_b"/>
             <direct name="direct9" input="dsp_lr.feedback" output="RS_DSP_MULTADD_REGIN.feedback"/>
@@ -2141,6 +2143,7 @@
             <direct name="direct1" input="dsp_lr.a_i" output="RS_DSP_MULTADD_REGOUT.a"/>
             <direct name="direct2" input="dsp_lr.b_i" output="RS_DSP_MULTADD_REGOUT.b"/>
             <direct name="direct3" input="RS_DSP_MULTADD_REGOUT.z" output="dsp_lr.z_o"/>
+            <direct name="direct3b" input="RS_DSP_MULTADD_REGOUT.dly_b" output="dsp_lr.dly_b_o"/>
             <direct name="direct4" input="dsp_lr.unsigned_a" output="RS_DSP_MULTADD_REGOUT.unsigned_a"/>
             <direct name="direct5" input="dsp_lr.unsigned_b" output="RS_DSP_MULTADD_REGOUT.unsigned_b"/>
             <direct name="direct9" input="dsp_lr.feedback" output="RS_DSP_MULTADD_REGOUT.feedback"/>
@@ -2194,6 +2197,7 @@
             <direct name="direct1" input="dsp_lr.a_i" output="RS_DSP_MULTADD_REGIN_REGOUT.a"/>
             <direct name="direct2" input="dsp_lr.b_i" output="RS_DSP_MULTADD_REGIN_REGOUT.b"/>
             <direct name="direct3" input="RS_DSP_MULTADD_REGIN_REGOUT.z" output="dsp_lr.z_o"/>
+            <direct name="direct3b" input="RS_DSP_MULTADD_REGIN_REGOUT.dly_b" output="dsp_lr.dly_b_o"/>
             <direct name="direct4" input="dsp_lr.unsigned_a" output="RS_DSP_MULTADD_REGIN_REGOUT.unsigned_a"/>
             <direct name="direct5" input="dsp_lr.unsigned_b" output="RS_DSP_MULTADD_REGIN_REGOUT.unsigned_b"/>
             <direct name="direct9" input="dsp_lr.feedback" output="RS_DSP_MULTADD_REGIN_REGOUT.feedback"/>

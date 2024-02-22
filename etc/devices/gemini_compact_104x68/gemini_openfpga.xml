@@ -529,7 +529,6 @@
       <port name="a" physical_mode_port="a_i"/>
       <port name="b" physical_mode_port="b_i"/>
       <port name="z" physical_mode_port="z_o"/>
-      <port name="lreset" physical_mode_port="lreset"/>
     </pb_type>
     <pb_type name="dsp.dsp_lr[MULT_REGIN].RS_DSP_MULT_REGIN" physical_pb_type_name="dsp.dsp_lr[physical].dsp_phy" mode_bits="0000000000000000000000000000000000000000000000000000000000000000000000000000000000010">
       <port name="a" physical_mode_port="a_i"/>
