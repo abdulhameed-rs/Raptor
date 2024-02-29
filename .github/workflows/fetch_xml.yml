@@ -98,7 +98,7 @@ jobs:
           gh_event=`echo ${{ github.event_name }}`
           if [ $gh_event == 'repository_dispatch' ]
           then
-              echo "payload: ${{ github.event.client_payload.new_release }}"
+              echo "payload: ${{ env.release_no }}"
           else
               echo "Tag is: ${{steps.tag_release.outputs.tag_name}}"
               echo "input tag was: ${{ env.release_no }}"
