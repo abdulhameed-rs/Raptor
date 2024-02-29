@@ -102,7 +102,6 @@ jobs:
           else
               echo "Tag is: ${{steps.tag_release.outputs.tag_name}}"
               echo "input tag was: ${{ env.release_no }}"
-              #echo "Files are: ${{ fromJson(steps.tag_release.outputs.downloaded_files)[0] }}"
           fi
           for file in $(ls -1 $GITHUB_WORKSPACE/*.tar.gz)
           do
