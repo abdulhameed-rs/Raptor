@@ -15,7 +15,7 @@ RAPTOR_EXE_DEBUG=1
 if [[ "$RAPTOR_EXE_DEBUG" == "1"   ]]; then
     $RAPTOR_PATH/bin/raptor.exe "$@"
 else
-    $RAPTOR_PATH/bin/raptor.exe "$@" 2>/dev/null
+    $RAPTOR_PATH/bin/raptor.exe "$@" 2> >(grep -vz -f  $RAPTOR_PATH/bin/ignore  >&2)
 fi
 
 

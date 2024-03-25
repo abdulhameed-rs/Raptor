@@ -1,0 +1,20 @@
+GdkPixbuf-WARNING
+gdk-pixbuf-query-loaders
+Gtk-Message
+Gtk-Message
+create_gr_gl_interface.cc
+create_gr_gl_interface.cc
+shared_context_state.cc
+gpu_channel_manager.cc
+shared_image_stub.cc
+gpu_channel.cc
+shared_context_state.cc
+gpu_channel_manager.cc
+shared_image_stub.cc
+gpu_channel.cc
+GLib-GIO-Message
+Gtk-Message
+GLib-GIO-WARNING
+This likely means that your installation is broken.
+Try running the command
+to make things work again for the time being.
