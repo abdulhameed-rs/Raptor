@@ -3135,7 +3135,6 @@
       <col type="dsp" startx="296" starty="2" priority="20"/>
       <col type="bram" startx="302" starty="2" priority="20"/>
     </fixed_layout>
-    <!-- CUSTOM_LAYOUTS_INSERT_POINT -->
   </layout>
   <auto_layout aspect_ratio="1.53">
     <!--Default perimeter to 'io' blocks (then add 'EMPTY' blocks at corners)-->
