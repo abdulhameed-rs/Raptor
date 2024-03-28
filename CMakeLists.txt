@@ -718,16 +718,10 @@ install(
       GROUP_READ GROUP_EXECUTE
       WORLD_READ WORLD_EXECUTE
       )
-#install(
-#      FILES Raptor_Tools/Flex_LM/
-#      Raptor_Tools/Flex_LM/
-#      Raptor_Tools/Flex_LM/
-#      DESTINATION  ${CMAKE_INSTALL_BINDIR}/Flex_LM
-#      PERMISSIONS
-#      OWNER_READ OWNER_EXECUTE OWNER_WRITE
-#      GROUP_READ GROUP_EXECUTE
-#      WORLD_READ WORLD_EXECUTE
-#      )
+install(
+      FILES src/ignore_msgs 
+      DESTINATION  ${CMAKE_INSTALL_BINDIR}/.ignore_msgs
+      )
 #install OpenLM  customer end
 if (PRODUCTION_BUILD)
   install(
@@ -902,7 +896,10 @@ else ()
           ${CMAKE_CURRENT_BINARY_DIR}/bin/raptor
         COMMAND ${CMAKE_COMMAND} -E copy
           ${PROJECT_SOURCE_DIR}/src/.raptorenv_lin64.sh
-          ${CMAKE_CURRENT_BINARY_DIR})
+          ${CMAKE_CURRENT_BINARY_DIR}
+	 COMMAND ${CMAKE_COMMAND} -E copy
+          ${PROJECT_SOURCE_DIR}/src/ignore_msgs 
+	  ${CMAKE_CURRENT_BINARY_DIR}/bin/.ignore_msgs)
   add_custom_command(TARGET raptor-bin POST_BUILD
         COMMAND echo "copy FOEDAG tclsh8.6 to bin"
         COMMAND ${CMAKE_COMMAND} -E copy
