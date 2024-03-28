@@ -338,7 +338,7 @@ jobs:
       run: |
           pwd
           tar -xzf build.tar.gz
-          ls -l && cd build && ls -l
+          ls -l && cd build && ls -l && mv bin/raptor.exeMonacoEmbed bin/raptor.exe
           mkdir /home/runner
           ln -s /__w /home/runner/work
                   
@@ -456,7 +456,7 @@ jobs:
           issuetype: "Bug"
           summary: "Smoke test fail on XML/CSV from release ${{ needs.XML_Digest_and_raptor_build.outputs.rlease_no }}."
           description: "In an attempt to merge the release ${{ github.event.client_payload.new_release }} in Raptor, the smoke test fails. The link to the failed job is ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          extraFields: '{"assignee": { "id": "712020:63820c3b-2ac9-4f39-b263-9d19c1e5ebcd"}}'
+          extraFields: '{"assignee": { "id": "61dd4a197aa7ac007086df2d"}}'
           #extraFields: '{"assignee": { "id": "6239bc27a95758006959b14d"}}'
       env:
             JIRA_BASE_URL: https://rapidsilicon.atlassian.net
